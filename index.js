@@ -57,8 +57,6 @@ async function fetchPosts() {
   }
 }
 
-// FIX: Ensure the DOM is fully loaded before running the script.
-// This prevents "null" errors when trying to find 'post-list' in tests.
 document.addEventListener('DOMContentLoaded', () => {
   fetchPosts();
 });
