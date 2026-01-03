@@ -1,46 +1,64 @@
-
+// Task 2: Display Posts - Create Function to Display Posts called displayPosts()
 function displayPosts(posts) {
-
+  // The id of the ul is post-list
   const postList = document.getElementById('post-list');
-  
-  if (!postList) return;
 
+  // Safety check: if postList is not found, stop execution to prevent errors
+  if (!postList) {
+    console.error('Could not find element with id "post-list"');
+    return;
+  }
+
+  // Loop through the posts list
   posts.forEach((post) => {
-
+    // Create a li tag
     const li = document.createElement('li');
 
+    // Create a new h1 tag
     const h1 = document.createElement('h1');
-
+    // Add the title as the textContent
     h1.textContent = post.title;
 
+    // Create a new p tag
     const p = document.createElement('p');
-
+    // Add the body as the textContent
     p.textContent = post.body;
 
+    // Append h1 and p to li
     li.appendChild(h1);
     li.appendChild(p);
 
+    // Append li to the ul
     postList.appendChild(li);
   });
 }
 
-
+// Task 2: Refactor with Async/Await - Create function to house fetch and apply async
 async function fetchPosts() {
   try {
-  s
+    // Fetch Data from an API
+    // Apply await to fetch
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
 
-    const data = await response.json();
+    // Check for network errors
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-    displayPosts(data);
+    // Convert the response to JSON
+    const posts = await response.json();
+
+    // Call displayPosts() function after fetch
+    displayPosts(posts);
     
   } catch (error) {
+    // Task 3: Error handling with developer tools
     console.error('Error fetching posts:', error);
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', fetchPosts);
-} else {
+// FIX: Ensure the DOM is fully loaded before running the script.
+// This prevents "null" errors when trying to find 'post-list' in tests.
+document.addEventListener('DOMContentLoaded', () => {
   fetchPosts();
-}
+});
